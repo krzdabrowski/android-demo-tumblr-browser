@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Tumblr Browser</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_photo_detail">Photo Detail</string>
+    <string name="title_activity_text_detail">Text Detail</string>
+    <string name="browse_image_description">Downloaded Tumblr Post</string>
+    <string name="title_text">Title: %s</string>
+    <string name="date_text">Date: %s</string>
+    <string name="activity_search">Search</string>
+    <string name="searchable_hint">Enter username to search</string>
+    <string name="message_no_data">My app has returned no values.\nHere\'s quick troubleshooting:\n\n\n• Is it your first launch?\nThen just search for an user.\n\n• Have you typed the username correctly?\n\n• You might see this screen if your internet connection is slow.\nIn this case, your data is currently downloading. Just wait a bit.</string>
+</resources>
