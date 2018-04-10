@@ -95,7 +95,7 @@ public class MainActivity extends BaseActivity implements DataJSON.AdapterCallba
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = null;
-        typeOfData = mAdapter.getItemViewType(position);  // get info if it's IMAGE (=0) or TEXT (=1) or OTHER (=2)
+        typeOfData = mAdapter.getItemViewType(position);  // get info if it's IMAGE (=0) or TEXT (=1) or PHOTOTEXT (=2) or OTHER (=3)
 
         if (typeOfData == 0) {
             intent = new Intent(this, PhotoDetailActivity.class);
@@ -104,6 +104,9 @@ public class MainActivity extends BaseActivity implements DataJSON.AdapterCallba
             intent = new Intent(this, TextDetailActivity.class);
             intent.putExtra(TEXT_INTENT_KEY, mAdapter.getText(position));
         } else if (typeOfData == 2) {
+            intent = new Intent(this, PhotoTextDetailActivity.class);
+            intent.putExtra(PHOTOTEXT_INTENT_KEY, mAdapter.getPhotoText(position));
+        } else if (typeOfData == 3) {
             intent = new Intent(Intent.ACTION_VIEW);
             String postUrl = mAdapter.getOther(position).getURL();
             intent.setData(Uri.parse(postUrl));
@@ -124,6 +127,8 @@ public class MainActivity extends BaseActivity implements DataJSON.AdapterCallba
         } else if (typeOfData == 1) {
             postUrl = mAdapter.getText(position).getURL();
         } else if (typeOfData == 2) {
+            postUrl = mAdapter.getPhotoText(position).getURL();
+        } else if (typeOfData == 3) {
             postUrl = mAdapter.getOther(position).getURL();
         }
 

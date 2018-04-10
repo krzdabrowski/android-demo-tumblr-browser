@@ -105,8 +105,8 @@ class DataJSON extends AsyncTask<String, Void, List<Object>> implements DataRaw.
                     } else if (type.equals("answer")) {
                         title = jsonPost.getString("question");
                         text = jsonPost.getString("answer");
-                        PostText singleText = new PostText(type, date, postUrl, title, text);
-                        mPostList.add(singleText);
+                        PostPhotoText singleAnswer = new PostPhotoText(type, date, postUrl, title, text);
+                        mPostList.add(singleAnswer);
 
                     } else if (type.equals("link")) {
                         title = jsonPost.getString("link-text");

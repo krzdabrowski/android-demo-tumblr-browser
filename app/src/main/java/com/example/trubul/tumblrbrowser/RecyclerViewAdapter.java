@@ -16,6 +16,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by krzysiek
@@ -24,7 +26,7 @@ import java.util.List;
 
 class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = "RecyclerViewAdapter";
-    private final int IMAGE = 0, TEXT = 1, OTHER = 2;
+    private final int IMAGE = 0, TEXT = 1, IMAGETEXT = 2, OTHER = 3;
     private Context mContext;
     private List<Object> mPostList;
 
@@ -54,14 +56,16 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-//    static class OtherViewHolder extends RecyclerView.ViewHolder {
-//        ImageView thumbnailOther;
-//
-//        public OtherViewHolder(View itemView) {
-//            super(itemView);
-//            this.thumbnailOther = itemView.findViewById(R.id.thumbnail_photo);
-//        }
-//    }
+    static class ImageTextViewHolder extends RecyclerView.ViewHolder {
+        TextView thumbnailText;
+        ImageView thumbnailPhoto;
+
+        public ImageTextViewHolder(View itemView) {
+            super(itemView);
+            this.thumbnailText = itemView.findViewById(R.id.thumbnail_text);
+            this.thumbnailPhoto = itemView.findViewById(R.id.thumbnail_photo);
+        }
+    }
 
 
     // 1) getItemViewType - returns the view type of the item at position for the purposes of view recycling
@@ -75,6 +79,8 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 return IMAGE;
             } else if (mPostList.get(position) instanceof PostText) {
                 return TEXT;
+            } else if (mPostList.get(position) instanceof PostPhotoText) {
+                return IMAGETEXT;
             } else if (mPostList.get(position) instanceof PostOther) {
                 return OTHER;
             }
@@ -101,9 +107,13 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 View v2 = inflater.inflate(R.layout.photo, parent, false);
                 viewHolder = new ImageViewHolder(v2);
                 break;
+            case IMAGETEXT:
+                View v3 = inflater.inflate(R.layout.phototext, parent, false);
+                viewHolder = new ImageTextViewHolder(v3);
+                break;
             case OTHER:
-                View v3 = inflater.inflate(R.layout.photo, parent, false);
-                viewHolder = new ImageViewHolder(v3);
+                View v4 = inflater.inflate(R.layout.photo, parent, false);
+                viewHolder = new ImageViewHolder(v4);
                 break;
             default:
                 Log.d(TAG, "onCreateViewHolder: default (init) mode");
@@ -113,7 +123,6 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
         return viewHolder;
     }
-
 
 
     // 3) onBindViewHolder - fill single element with data; called by LayoutManager when it wants new data to be stored in a ViewHolder to display it
@@ -149,6 +158,48 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             .error(R.drawable.placeholder)
                             .placeholder(R.drawable.placeholder)
                             .into(imageHolder.thumbnailPhoto);
+                }
+                break;
+
+            case IMAGETEXT:
+                ImageTextViewHolder imageTextHolder = (ImageTextViewHolder) viewHolder;
+
+                if((mPostList == null) || (mPostList.size() == 0)) {
+                    imageTextHolder.thumbnailPhoto.setImageResource(R.drawable.placeholder);
+
+                } else {
+                    PostPhotoText singleAnswer = (PostPhotoText) mPostList.get(position);
+                    String answerText = singleAnswer.getText();
+
+                    if (singleAnswer.getText().contains("<img src=")) {
+                        String link = null;
+
+                        Pattern patternImage = Pattern.compile("<img src=\"(.*?)\"");  // get link to image between HTML tags
+                        Pattern patternText = Pattern.compile("(?s)(.*)<figure(.*?)/figure>(.*)");  // ?s ignores newlines; then get text before or/and after image
+
+                        Matcher matcherImage = patternImage.matcher(answerText);
+                        Matcher matcherText = patternText.matcher(answerText);
+
+                        while (matcherImage.find()) {
+                            link = matcherImage.group(1);
+                        }
+                        while (matcherText.find()) {
+                            answerText = matcherText.group(1);
+                            answerText += matcherText.group(3);
+                        }
+
+                        Picasso.with(mContext)
+                                .load(link)
+                                .error(R.drawable.placeholder)
+                                .placeholder(R.drawable.placeholder)
+                                .into(imageTextHolder.thumbnailPhoto);
+                    }
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        imageTextHolder.thumbnailText.setText(Html.fromHtml(answerText, Html.FROM_HTML_MODE_COMPACT));
+                    } else {
+                        imageTextHolder.thumbnailText.setText(Html.fromHtml(answerText));
+                    }
                 }
                 break;
 
@@ -217,6 +268,14 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public PostText getText(int position) {
         if ((mPostList != null) && (mPostList.size() != 0)) {
             return (PostText) mPostList.get(position);
+        } else {
+            return null;
+        }
+    }
+
+    public PostPhotoText getPhotoText(int position) {
+        if ((mPostList != null) && (mPostList.size() != 0)) {
+            return (PostPhotoText) mPostList.get(position);
         } else {
             return null;
         }

@@ -6,9 +6,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
+import android.text.Spanned;
+import android.util.Log;
 import android.widget.TextView;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class TextDetailActivity extends BaseActivity {
+
+    private static final String TAG = "TextDetailActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,7 +44,6 @@ public class TextDetailActivity extends BaseActivity {
                 textTitle.setText(Html.fromHtml(res.getString(R.string.title_text, singlePost.getTitle())));
                 textData.setText(Html.fromHtml(singlePost.getText()));
             }
-
         }
     }
 
