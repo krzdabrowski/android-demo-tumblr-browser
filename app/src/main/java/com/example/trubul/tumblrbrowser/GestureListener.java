@@ -30,21 +30,29 @@ class GestureListener extends RecyclerView.SimpleOnItemTouchListener {
 
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
-                View childView = recyclerView.findChildViewUnder(e.getX(), e.getY());  // check and return which View was under coordinates(X,Y)
 
-                if(childView != null && mListener != null ) {
-                    mListener.onItemClick(childView, recyclerView.getChildAdapterPosition(childView));
+                if (!MainActivity.flagInit) {
+                    View childView = recyclerView.findChildViewUnder(e.getX(), e.getY());  // check and return which View was under coordinates(X,Y)
+
+                    if (childView != null && mListener != null) {
+                        mListener.onItemClick(childView, recyclerView.getChildAdapterPosition(childView));
+                    }
+
+                    return true;
                 }
 
-                return true;
+                return false;
             }
 
             @Override
             public void onLongPress(MotionEvent e) {
-                View childView = recyclerView.findChildViewUnder(e.getX(), e.getY());
 
-                if(childView != null && mListener != null ) {
-                    mListener.onItemLongClick(childView, recyclerView.getChildAdapterPosition(childView));
+                if (!MainActivity.flagInit) {
+                    View childView = recyclerView.findChildViewUnder(e.getX(), e.getY());
+
+                    if (childView != null && mListener != null) {
+                        mListener.onItemLongClick(childView, recyclerView.getChildAdapterPosition(childView));
+                    }
                 }
             }
         });

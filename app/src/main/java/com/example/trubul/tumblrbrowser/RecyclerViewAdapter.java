@@ -99,22 +99,27 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         switch (viewType) {
             case TEXT:
+                MainActivity.flagInit = false;
                 View v1 = inflater.inflate(R.layout.text, parent, false);
                 viewHolder = new TextViewHolder(v1);
                 break;
             case IMAGE:
+                MainActivity.flagInit = false;
                 View v2 = inflater.inflate(R.layout.photo, parent, false);
                 viewHolder = new ImageViewHolder(v2);
                 break;
             case IMAGETEXT:
+                MainActivity.flagInit = false;
                 View v3 = inflater.inflate(R.layout.phototext, parent, false);
                 viewHolder = new ImageTextViewHolder(v3);
                 break;
             case OTHER:
+                MainActivity.flagInit = false;
                 View v4 = inflater.inflate(R.layout.photo, parent, false);
                 viewHolder = new ImageViewHolder(v4);
                 break;
             default:
+                MainActivity.flagInit = true;
                 Log.d(TAG, "onCreateViewHolder: default (init) mode");
                 View v = inflater.inflate(R.layout.text, parent, false);
                 viewHolder = new TextViewHolder(v);

@@ -68,10 +68,13 @@ class DataRaw {
 
         } catch (MalformedURLException e) {
             Log.e(TAG, "getRawData: Invalid URL " + e.getMessage());
+            MainActivity.flagInit = true;
         } catch (IOException e) {
             Log.e(TAG, "getRawData: IO Exception reading data: " + e.getMessage());
+            MainActivity.flagInit = true;
         } catch (SecurityException e) {
             Log.e(TAG, "getRawData: Security exception. Needs permission? " + e.getMessage());
+            MainActivity.flagInit = true;
         } finally {
             if (connection != null) {
                 connection.disconnect();

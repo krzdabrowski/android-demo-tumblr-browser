@@ -20,6 +20,7 @@ public class MainActivity extends BaseActivity implements DataJSON.AdapterCallba
     private static final String TAG = "MainActivity";
     private RecyclerViewAdapter mAdapter;
     private int typeOfData;
+    public static boolean flagInit = true;
 
 
     //////////////////////////////////////////  LIFECYCLE  //////////////////////////////////////////
