@@ -56,16 +56,16 @@ class DataJSON extends AsyncTask<String, Void, List<Object>> implements DataRaw.
                 JSONArray itemsArray = jsonData.getJSONArray("posts");
 
                 for(int i=0; i<itemsArray.length(); i++) { // for each elements (json/dict)
-                    JSONObject jsonPhoto = itemsArray.getJSONObject(i);
+                    JSONObject jsonPost = itemsArray.getJSONObject(i);
 
                     // Type
-                    String type = jsonPhoto.getString("type");
+                    String type = jsonPost.getString("type");
 
                     // Date
-                    String date = jsonPhoto.getString("date");
+                    String date = jsonPost.getString("date");
 
                     // URL
-                    String postUrl = jsonPhoto.getString("url");
+                    String postUrl = jsonPost.getString("url");
 
                     // Title/source and data
                     String title;
@@ -74,41 +74,54 @@ class DataJSON extends AsyncTask<String, Void, List<Object>> implements DataRaw.
                     String text;
 
                     if (type.equals("photo")) {
-                        if (jsonPhoto.getString("photo-caption").equals("")) {
+                        if (jsonPost.getString("photo-caption").equals("")) {
                             title = null;
                         } else {
-                            title = jsonPhoto.getString("photo-caption");
+                            title = jsonPost.getString("photo-caption");
                         }
-                        smallImage = jsonPhoto.getString("photo-url-400");
-                        bigImage = jsonPhoto.getString("photo-url-1280");
+                        smallImage = jsonPost.getString("photo-url-400");
+                        bigImage = jsonPost.getString("photo-url-1280");
                         PostPhoto singlePhoto = new PostPhoto(type, date, postUrl, title, smallImage, bigImage);
                         mPostList.add(singlePhoto);
 
                     } else if (type.equals("regular")) {
-                        title = jsonPhoto.getString("regular-title");
-                        text = jsonPhoto.getString("regular-body");
+                        title = jsonPost.getString("regular-title");
+                        text = jsonPost.getString("regular-body");
                         PostText singleText = new PostText(type, date, postUrl, title, text);
                         mPostList.add(singleText);
 
                     } else if (type.equals("conversation")) {
-                        title = jsonPhoto.getString("conversation-title");
-                        text = jsonPhoto.getString("conversation-text");
+                        title = jsonPost.getString("conversation-title");
+                        text = jsonPost.getString("conversation-text");
                         PostText singleText = new PostText(type, date, postUrl, title, text);
                         mPostList.add(singleText);
 
                     } else if (type.equals("quote")) {
-                        title = jsonPhoto.getString("quote-source");
-                        text = jsonPhoto.getString("quote-text");
+                        title = jsonPost.getString("quote-source");
+                        text = jsonPost.getString("quote-text");
                         PostText singleText = new PostText(type, date, postUrl, title, text);
                         mPostList.add(singleText);
 
                     } else if (type.equals("answer")) {
-                        title = jsonPhoto.getString("question");
-                        text = jsonPhoto.getString("answer");
+                        title = jsonPost.getString("question");
+                        text = jsonPost.getString("answer");
                         PostText singleText = new PostText(type, date, postUrl, title, text);
                         mPostList.add(singleText);
-                    }
 
+                    } else if (type.equals("link")) {
+                        title = jsonPost.getString("link-text");
+                        text = jsonPost.getString("link-url");
+                        PostText singleText = new PostText(type, date, postUrl, title, text);
+                        mPostList.add(singleText);
+
+                    } else if (type.equals("audio")) {
+                        PostOther singleOther = new PostOther(type, date, postUrl);
+                        mPostList.add(singleOther);
+
+                    } else if (type.equals("video")) {
+                        PostOther singleOther = new PostOther(type, date, postUrl);
+                        mPostList.add(singleOther);
+                    }
                 }
             } catch(JSONException e) {
                 e.printStackTrace();

@@ -95,15 +95,19 @@ public class MainActivity extends BaseActivity implements DataJSON.AdapterCallba
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = null;
-        typeOfData = mAdapter.getItemViewType(position);  // get info if it's IMAGE (=0) or TEXT (=1)
+        typeOfData = mAdapter.getItemViewType(position);  // get info if it's IMAGE (=0) or TEXT (=1) or OTHER (=2)
 
         if (typeOfData == 0) {
             intent = new Intent(this, PhotoDetailActivity.class);
-            intent.putExtra(PHOTO_INTENT_KEY, mAdapter.getFullPhoto(position));  // share data Bundle-like
+            intent.putExtra(PHOTO_INTENT_KEY, mAdapter.getPhoto(position));  // share data Bundle-like
         } else if (typeOfData == 1) {
             intent = new Intent(this, TextDetailActivity.class);
-            intent.putExtra(TEXT_INTENT_KEY, mAdapter.getFullText(position));
-        }
+            intent.putExtra(TEXT_INTENT_KEY, mAdapter.getText(position));
+        } else if (typeOfData == 2) {
+            intent = new Intent(Intent.ACTION_VIEW);
+            String postUrl = mAdapter.getOther(position).getURL();
+            intent.setData(Uri.parse(postUrl));
+    }
 
         startActivity(intent);
     }
@@ -116,9 +120,11 @@ public class MainActivity extends BaseActivity implements DataJSON.AdapterCallba
         typeOfData = mAdapter.getItemViewType(position);
 
         if (typeOfData == 0) {
-            postUrl = mAdapter.getFullPhoto(position).getURL();
+            postUrl = mAdapter.getPhoto(position).getURL();
         } else if (typeOfData == 1) {
-            postUrl = mAdapter.getFullText(position).getURL();
+            postUrl = mAdapter.getText(position).getURL();
+        } else if (typeOfData == 2) {
+            postUrl = mAdapter.getOther(position).getURL();
         }
 
         intent.setData(Uri.parse(postUrl));

@@ -24,7 +24,7 @@ import java.util.List;
 
 class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = "RecyclerViewAdapter";
-    private final int IMAGE = 0, TEXT = 1;
+    private final int IMAGE = 0, TEXT = 1, OTHER = 2;
     private Context mContext;
     private List<Object> mPostList;
 
@@ -54,6 +54,15 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
+//    static class OtherViewHolder extends RecyclerView.ViewHolder {
+//        ImageView thumbnailOther;
+//
+//        public OtherViewHolder(View itemView) {
+//            super(itemView);
+//            this.thumbnailOther = itemView.findViewById(R.id.thumbnail_photo);
+//        }
+//    }
+
 
     // 1) getItemViewType - returns the view type of the item at position for the purposes of view recycling
     @Override
@@ -66,6 +75,8 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 return IMAGE;
             } else if (mPostList.get(position) instanceof PostText) {
                 return TEXT;
+            } else if (mPostList.get(position) instanceof PostOther) {
+                return OTHER;
             }
         }
 
@@ -89,6 +100,10 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             case IMAGE:
                 View v2 = inflater.inflate(R.layout.photo, parent, false);
                 viewHolder = new ImageViewHolder(v2);
+                break;
+            case OTHER:
+                View v3 = inflater.inflate(R.layout.photo, parent, false);
+                viewHolder = new ImageViewHolder(v3);
                 break;
             default:
                 Log.d(TAG, "onCreateViewHolder: default (init) mode");
@@ -117,7 +132,6 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 } else {
                     textHolder.thumbnailText.setText(Html.fromHtml(singleText.getText()));
                 }
-
                 break;
 
             case IMAGE:
@@ -125,6 +139,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 if((mPostList == null) || (mPostList.size() == 0)) {
                     imageHolder.thumbnailPhoto.setImageResource(R.drawable.placeholder);
+
                 } else {
                     PostPhoto singlePhoto = (PostPhoto) mPostList.get(position);
 
@@ -135,7 +150,32 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             .placeholder(R.drawable.placeholder)
                             .into(imageHolder.thumbnailPhoto);
                 }
+                break;
 
+            case OTHER:
+                ImageViewHolder otherHolder = (ImageViewHolder) viewHolder;
+
+                if((mPostList == null) || (mPostList.size() == 0)) {
+                    otherHolder.thumbnailPhoto.setImageResource(R.drawable.placeholder);
+
+                } else {
+                    PostOther singleOther = (PostOther) mPostList.get(position);
+
+                    if (singleOther.getType().equals("audio")) {
+                        Picasso.with(mContext)
+                                .load(singleOther.getURL())  // calculated
+                                .error(R.drawable.audio)  // it'll be an error every time
+                                .placeholder(R.drawable.placeholder)
+                                .into(otherHolder.thumbnailPhoto);
+
+                    } else if (singleOther.getType().equals("video")) {
+                        Picasso.with(mContext)
+                                .load(singleOther.getURL())  // calculated
+                                .error(R.drawable.movie)  // it'll be an error every time
+                                .placeholder(R.drawable.placeholder)
+                                .into(otherHolder.thumbnailPhoto);
+                    }
+                }
                 break;
 
             default:
@@ -166,7 +206,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyDataSetChanged();  // tell it to "registered observers" (like RecyclerView) = refresh display
     }
 
-    public PostPhoto getFullPhoto(int position) {
+    public PostPhoto getPhoto(int position) {
         if ((mPostList != null) && (mPostList.size() != 0)) {
             return (PostPhoto) mPostList.get(position);
         } else {
@@ -174,9 +214,17 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public PostText getFullText(int position) {
+    public PostText getText(int position) {
         if ((mPostList != null) && (mPostList.size() != 0)) {
             return (PostText) mPostList.get(position);
+        } else {
+            return null;
+        }
+    }
+
+    public PostOther getOther(int position) {
+        if ((mPostList != null) && (mPostList.size() != 0)) {
+            return (PostOther) mPostList.get(position);
         } else {
             return null;
         }
