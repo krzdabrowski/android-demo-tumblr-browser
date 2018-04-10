@@ -9,14 +9,14 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/thumbnail_text"
+        android:id="@+id/thumbnail_phototext_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/browse_image_description"
         tools:text="TextView placeholder" />
 
     <ImageView
-        android:id="@+id/thumbnail_photo"
+        android:id="@+id/thumbnail_phototext_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/browse_image_description"

@@ -33,7 +33,6 @@ class PostOther implements Serializable {
 
     String getURL() { return mURL; }
 
-
     @Override
     public String toString() {
         return "PostOther{" +

@@ -7,6 +7,7 @@
     <string name="title_activity_phototext_detail">Photo Text Detail</string>
     <string name="browse_image_description">Downloaded Tumblr Post</string>
     <string name="title_text">Title: %s</string>
+    <string name="question_text">Question: %s</string>
     <string name="date_text">Date: %s</string>
     <string name="activity_search">Search</string>
     <string name="searchable_hint">Enter username to search</string>

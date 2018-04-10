@@ -29,7 +29,7 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
 
-        // display the back-button toolbar or no
+        // Display the back-button toolbar or no
         if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(isBackButton);
         }

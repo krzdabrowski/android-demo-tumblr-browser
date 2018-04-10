@@ -16,14 +16,12 @@ import java.util.List;
  * On 4/8/18.
  */
 
-
-// aka <type of Params sent to the task upon execution, Progress (bar), type of Result of the background operation>
+// AsyncTask<type of Params sent to the task upon execution, Progress (bar), type of Result of the background operation>
 class DataJSON extends AsyncTask<String, Void, List<Object>> implements DataRaw.JSONCallback {
 
     private static final String TAG = "DataJSON";
     private final AdapterCallback mCallback;
     private List<Object> mPostList = null;
-
 
     interface AdapterCallback {
         void loadData(List<Object> data, DownloadStatus status);
@@ -58,16 +56,12 @@ class DataJSON extends AsyncTask<String, Void, List<Object>> implements DataRaw.
                 for(int i=0; i<itemsArray.length(); i++) { // for each elements (json/dict)
                     JSONObject jsonPost = itemsArray.getJSONObject(i);
 
-                    // Type
+                    // Type, date, url
                     String type = jsonPost.getString("type");
-
-                    // Date
                     String date = jsonPost.getString("date");
-
-                    // URL
                     String postUrl = jsonPost.getString("url");
 
-                    // Title/source and data
+                    // Title, data
                     String title;
                     String smallImage;
                     String bigImage;
@@ -102,17 +96,17 @@ class DataJSON extends AsyncTask<String, Void, List<Object>> implements DataRaw.
                         PostText singleText = new PostText(type, date, postUrl, title, text);
                         mPostList.add(singleText);
 
-                    } else if (type.equals("answer")) {
-                        title = jsonPost.getString("question");
-                        text = jsonPost.getString("answer");
-                        PostPhotoText singleAnswer = new PostPhotoText(type, date, postUrl, title, text);
-                        mPostList.add(singleAnswer);
-
                     } else if (type.equals("link")) {
                         title = jsonPost.getString("link-text");
                         text = jsonPost.getString("link-url");
                         PostText singleText = new PostText(type, date, postUrl, title, text);
                         mPostList.add(singleText);
+
+                    } else if (type.equals("answer")) {
+                        title = jsonPost.getString("question");
+                        text = jsonPost.getString("answer");
+                        PostPhotoText singleAnswer = new PostPhotoText(type, date, postUrl, title, text);
+                        mPostList.add(singleAnswer);
 
                     } else if (type.equals("audio")) {
                         PostOther singleOther = new PostOther(type, date, postUrl);
@@ -135,7 +129,6 @@ class DataJSON extends AsyncTask<String, Void, List<Object>> implements DataRaw.
     @Override
     protected List<Object> doInBackground(String... strings) {
         String myUri = createUri(strings[0]);
-        Log.d(TAG, "uri is: " + myUri);
         DataRaw raw = new DataRaw(this);
 
         String data = raw.downloadData(myUri);

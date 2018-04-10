@@ -45,7 +45,6 @@ class PostPhotoText implements Serializable {
         return mText;
     }
 
-
     @Override
     public String toString() {
         return "PostPhoto{" +

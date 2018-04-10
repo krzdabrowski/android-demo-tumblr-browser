@@ -20,13 +20,11 @@ enum DownloadStatus { IDLE, DOWNLOADING, OK, FAILED }
 // OK = downloading was successful
 // FAILED = invalid url, downloading problem, empty data etc
 
-
 class DataRaw {
 
     private static final String TAG = "DataRaw";
     private DownloadStatus mDownloadStatus;
     private final JSONCallback mCallback;
-
 
     interface JSONCallback {
         void parseJSON(String data, DownloadStatus status);
@@ -55,7 +53,6 @@ class DataRaw {
             connection = (HttpURLConnection) myUrl.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
-
 
             // Create a new buffered reader and String Builder
             in = new BufferedReader(new InputStreamReader(connection.getInputStream()));

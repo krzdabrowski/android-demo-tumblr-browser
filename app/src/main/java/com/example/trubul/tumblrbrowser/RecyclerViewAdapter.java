@@ -30,7 +30,6 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private Context mContext;
     private List<Object> mPostList;
 
-
     public RecyclerViewAdapter(Context context, List<Object> postList) {
         mContext = context;
         mPostList = postList;
@@ -43,7 +42,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         public ImageViewHolder(View itemView) {
             super(itemView);
-            this.thumbnailPhoto = itemView.findViewById(R.id.thumbnail_photo);
+            this.thumbnailPhoto = itemView.findViewById(R.id.thumbnail_photo_photo);
         }
     }
 
@@ -52,7 +51,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         public TextViewHolder(View itemView) {
             super(itemView);
-            this.thumbnailText = itemView.findViewById(R.id.thumbnail_text);
+            this.thumbnailText = itemView.findViewById(R.id.thumbnail_text_text);
         }
     }
 
@@ -62,8 +61,8 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         public ImageTextViewHolder(View itemView) {
             super(itemView);
-            this.thumbnailText = itemView.findViewById(R.id.thumbnail_text);
-            this.thumbnailPhoto = itemView.findViewById(R.id.thumbnail_photo);
+            this.thumbnailText = itemView.findViewById(R.id.thumbnail_phototext_text);
+            this.thumbnailPhoto = itemView.findViewById(R.id.thumbnail_phototext_photo);
         }
     }
 
@@ -130,10 +129,8 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
 
         switch (viewHolder.getItemViewType()) {
-
             case TEXT:
                 TextViewHolder textHolder = (TextViewHolder) viewHolder;
-
                 PostText singleText = (PostText) mPostList.get(position);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -148,7 +145,6 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 if((mPostList == null) || (mPostList.size() == 0)) {
                     imageHolder.thumbnailPhoto.setImageResource(R.drawable.placeholder);
-
                 } else {
                     PostPhoto singlePhoto = (PostPhoto) mPostList.get(position);
 
@@ -166,13 +162,12 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 if((mPostList == null) || (mPostList.size() == 0)) {
                     imageTextHolder.thumbnailPhoto.setImageResource(R.drawable.placeholder);
-
                 } else {
                     PostPhotoText singleAnswer = (PostPhotoText) mPostList.get(position);
                     String answerText = singleAnswer.getText();
 
-                    if (singleAnswer.getText().contains("<img src=")) {
-                        String link = null;
+                    if (answerText.contains("<img src=")) {
+                        String imageLink = null;
 
                         Pattern patternImage = Pattern.compile("<img src=\"(.*?)\"");  // get link to image between HTML tags
                         Pattern patternText = Pattern.compile("(?s)(.*)<figure(.*?)/figure>(.*)");  // ?s ignores newlines; then get text before or/and after image
@@ -181,7 +176,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         Matcher matcherText = patternText.matcher(answerText);
 
                         while (matcherImage.find()) {
-                            link = matcherImage.group(1);
+                            imageLink = matcherImage.group(1);
                         }
                         while (matcherText.find()) {
                             answerText = matcherText.group(1);
@@ -189,7 +184,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         }
 
                         Picasso.with(mContext)
-                                .load(link)
+                                .load(imageLink)
                                 .error(R.drawable.placeholder)
                                 .placeholder(R.drawable.placeholder)
                                 .into(imageTextHolder.thumbnailPhoto);
@@ -235,7 +230,6 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 String message = mContext.getString(R.string.message_no_data);
                 initHolder.thumbnailText.setText(message);
-
                 break;
         }
     }

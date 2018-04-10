@@ -4,7 +4,5 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <!--<item name="android:colorBackgroundFloating">@color/primary</item> &lt;!&ndash; tego sie uzywa do koloru kart od API 23 &ndash;&gt;-->
-        <!--<item name="android:navigationBarColor">@color/primary_dark</item> &lt;!&ndash; a to zmienia na dole pasek &ndash;&gt;-->
     </style>
 </resources>
