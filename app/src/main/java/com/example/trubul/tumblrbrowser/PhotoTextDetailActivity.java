@@ -6,13 +6,18 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PhotoTextDetailActivity extends BaseActivity {
+
+    private static final String TAG = "PhotoTextDetailActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +62,10 @@ public class PhotoTextDetailActivity extends BaseActivity {
                         .error(R.drawable.placeholder)
                         .placeholder(R.drawable.placeholder)
                         .into(image);
+            }
+            else {  // just don't show the empty placeholder
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, 0);
+                image.setLayoutParams(layoutParams);
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

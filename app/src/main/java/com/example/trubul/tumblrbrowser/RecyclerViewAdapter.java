@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -193,7 +194,11 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                                 .error(R.drawable.placeholder)
                                 .placeholder(R.drawable.placeholder)
                                 .into(imageTextHolder.thumbnailPhoto);
-                    }
+
+                    } else {  // just don't show the empty placeholder
+                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, 0);
+                            imageTextHolder.thumbnailPhoto.setLayoutParams(layoutParams);
+                        }
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         imageTextHolder.thumbnailText.setText(Html.fromHtml(answerText, Html.FROM_HTML_MODE_COMPACT));
