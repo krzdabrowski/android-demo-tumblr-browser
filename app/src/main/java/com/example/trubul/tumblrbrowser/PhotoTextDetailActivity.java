@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -62,6 +64,7 @@ public class PhotoTextDetailActivity extends BaseActivity {
                         .error(R.drawable.placeholder)
                         .placeholder(R.drawable.placeholder)
                         .into(image);
+
             }
             else {  // just don't show the empty placeholder
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, 0);
@@ -69,11 +72,11 @@ public class PhotoTextDetailActivity extends BaseActivity {
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                title.setText(Html.fromHtml(res.getString(R.string.question_text, singlePost.getTitle()), Html.FROM_HTML_MODE_COMPACT));
+                title.setText(Html.fromHtml(res.getString(R.string.title_text, singlePost.getTitle()), Html.FROM_HTML_MODE_COMPACT));
                 data.setText(Html.fromHtml(answerText, Html.FROM_HTML_MODE_COMPACT));
 
             } else {
-                title.setText(Html.fromHtml(res.getString(R.string.question_text, singlePost.getTitle())));
+                title.setText(Html.fromHtml(res.getString(R.string.title_text, singlePost.getTitle())));
                 data.setText(Html.fromHtml(answerText));
             }
         }

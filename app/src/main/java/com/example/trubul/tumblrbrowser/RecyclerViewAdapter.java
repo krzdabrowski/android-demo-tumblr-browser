@@ -100,22 +100,18 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         switch (viewType) {
             case TEXT:
-                MainActivity.flagInit = false;
                 View v1 = inflater.inflate(R.layout.text, parent, false);
                 viewHolder = new TextViewHolder(v1);
                 break;
             case IMAGE:
-                MainActivity.flagInit = false;
                 View v2 = inflater.inflate(R.layout.photo, parent, false);
                 viewHolder = new ImageViewHolder(v2);
                 break;
             case IMAGETEXT:
-                MainActivity.flagInit = false;
                 View v3 = inflater.inflate(R.layout.phototext, parent, false);
                 viewHolder = new ImageTextViewHolder(v3);
                 break;
             case OTHER:
-                MainActivity.flagInit = false;
                 View v4 = inflater.inflate(R.layout.photo, parent, false);
                 viewHolder = new ImageViewHolder(v4);
                 break;
@@ -136,6 +132,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         switch (viewHolder.getItemViewType()) {
             case TEXT:
+                MainActivity.flagInit = false;
                 TextViewHolder textHolder = (TextViewHolder) viewHolder;
                 PostText singleText = (PostText) mPostList.get(position);
 
@@ -147,6 +144,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 break;
 
             case IMAGE:
+                MainActivity.flagInit = false;
                 ImageViewHolder imageHolder = (ImageViewHolder) viewHolder;
 
                 if((mPostList == null) || (mPostList.size() == 0)) {
@@ -164,6 +162,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 break;
 
             case IMAGETEXT:
+                MainActivity.flagInit = false;
                 ImageTextViewHolder imageTextHolder = (ImageTextViewHolder) viewHolder;
 
                 if((mPostList == null) || (mPostList.size() == 0)) {
@@ -209,6 +208,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 break;
 
             case OTHER:
+                MainActivity.flagInit = false;
                 ImageViewHolder otherHolder = (ImageViewHolder) viewHolder;
 
                 if((mPostList == null) || (mPostList.size() == 0)) {
@@ -235,6 +235,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 break;
 
             default:
+                MainActivity.flagInit = true;
                 Log.d(TAG, "onBindViewHolder: default mode");
                 TextViewHolder initHolder = (TextViewHolder) viewHolder;
 
