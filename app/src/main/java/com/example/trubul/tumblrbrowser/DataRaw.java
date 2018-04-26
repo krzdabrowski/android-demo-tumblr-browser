@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by krzysiek
@@ -40,6 +42,7 @@ class DataRaw {
         HttpURLConnection connection = null;
         BufferedReader in = null;
         String inputLine;
+        String cleanResult = "";
 
         if (uri == null) {
             mDownloadStatus = DownloadStatus.FAILED;
@@ -64,7 +67,17 @@ class DataRaw {
             }
 
             mDownloadStatus = DownloadStatus.OK;
-            return stringBuilder.toString();
+
+            // Fix retarded API change
+            // No more debug=1 option to make JSON easily
+            // https://web.archive.org/web/20180330083429/https://www.tumblr.com/docs/en/api/v1
+            Pattern pattern = Pattern.compile("\\{(.*)\\}");
+            Matcher matcher = pattern.matcher(stringBuilder);
+            while (matcher.find()) {
+                cleanResult = matcher.group();
+            }
+
+            return cleanResult;
 
         } catch (MalformedURLException e) {
             Log.e(TAG, "getRawData: Invalid URL " + e.getMessage());

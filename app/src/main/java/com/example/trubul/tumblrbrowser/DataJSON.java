@@ -40,7 +40,6 @@ class DataJSON extends AsyncTask<String, Void, List<Object>> implements DataRaw.
                 .appendPath("api")
                 .appendPath("read")
                 .appendPath("json")
-                .appendQueryParameter("debug", "1")
                 .build().toString();
     }
 
